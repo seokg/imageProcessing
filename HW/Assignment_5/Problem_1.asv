@@ -1,0 +1,32 @@
+function Problem_1()
+%% image Restoration
+%    blur lenna image
+%    add random gaussian noise -> SNR be 12dB
+%    restore the blur image 
+%    
+%    H:LPF corresponding to Hamming Window in the freq domain
+%    implement following restoration filters
+%    calc PSNR
+
+    close all;
+    clear all;
+    
+    imgdir = uigetdir('Image Directory');
+    file = fopen(fullfile(imgdir,'\lenna_gray_256x256.raw'),'rb');
+    grayLenna = fread(file,fliplr([256,256]),'*uint8')';
+    fclose(file);
+
+%%  1.1 
+    noiseLenna = gausNoise(double(grayLenna)/255);
+    figure; imshow(noiseLenna,[]); title('Problem 1.1');
+    matlabNosie = imnoise(grayLenna,'gaussian');
+    figure; imshow(matlabNosie,[]); title('matlab noise');
+
+end
+
+function output = gausNoise(input)
+    mean = 0;     % default mean
+    var = 0.01;  % default variance
+  
+    output = input + sqrt(var)*randn(size(input)) + mean;
+end
